@@ -3,6 +3,7 @@
 const express = require('express');
 const app = express();
 
+//
 const cors = require('cors');
 const logger = require('./middleware/logger');
 const serverError = require('./error-handlers/500');
@@ -25,10 +26,11 @@ app.use('/cattreats', catTreatRoute);
 //   response.status(200).send({name: request.query.name});
 // });
 
+//error handling
 app.use('*', notFoundError);
 app.use(serverError);
 
-
+//export "app", and "start" method when called
 module.exports = {
   app,
   start: (port) => app.listen(port, () => {
