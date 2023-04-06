@@ -7,38 +7,68 @@ const validator = require('../middleware/validator');
 
 
 router.get('/', readCatTreat);
+router.get('/:id', readPluralCatTreats);
 router.post('/',validator, createCatTreat);
 router.put('/:id', updateCatTreat);
 router.delete('/:id', deleteCatTreat);
 
-const data = [{name: 'Squeezables', price: 7, flavor: 'Assorted', type: 'wet'}];
-
-
 async function readCatTreat(request, response, next) {
+  // let {name} = request.query;
+  try {
   let data = await CatTreat.findAll();
-  response.json(data);
+  response.status(200).json(data);
+} catch (error) {
+    console.log(' readCatTreat Error: ', error);
+  }
+}
+
+async function readPluralCatTreats(request, response, next) {
+  console.log('Test message')
+  let id = request.params.id;
+  try {
+  let data = await CatTreat.findOne( {where:{id}});
+  response.status(200).json(data);
+} catch (error) {
+    console.log(' readPluralCatTreats Error: ', error);
+  }
 }
 
 async function createCatTreat(request, response, next) {
-  const catTreat = await CatTreat.create(request.body);
-  response.json(catTreat);
+  try {
+  const catTreatObj = await CatTreat.create(request.body);
+  response.status(200).json(catTreatObj);
+  } catch (error) {
+    console.log('createCatTreat Error: ', error);
+  }
 }
 
-function updateCatTreat(request, response, next) {
+async function updateCatTreat(request, response, next) {
   let id = request.params.id;
-  const catTreat = {
+  try {
+  const catTreatObj = {
     name: request.body.name,
-    age: request.body.age,
-    sex: request.body.sex,
-    breed: request.body.breed,
-    id: id
+    price: request.body.price,
+    flavor: request.body.flavor,
+    type: request.body.type,
   }
   // update the array
-  let index = id - 1;
-  data[index] = catTreat;
-  response.status(200).send(catTreat);
+ const catTreatUpdate = await CatTreat.findOne({where:{id}});
+ const results = await catTreatUpdate.update(catTreatObj);
+  response.status(200).send(results);
+  } catch (error) {
+    console.log('updateCatTreat Error: ', error);
+  }
 }
 
-function deleteCatTreat(request, response, next) {}
+async function deleteCatTreat(request, response, next) {
+  let id = request.params.id;
+  try {
+    let catTreatToDelete = await CatTreat.findOne({where:{id}});
+  await catTreatToDelete.destroy();
+  response.status(200).send('CatTreat deleted');    
+  } catch (error) {
+    console.log('deleteCatTreat Error: ', error);
+  }
+}
 
 module.exports = router;

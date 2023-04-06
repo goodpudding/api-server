@@ -5,7 +5,7 @@
   "main": "index.js",
   "devDependencies": {},
   "scripts": {
-    "test": "jest",
+    "test": "jest --verbose --coverage ",
     "start": "node index.js"
   },
   "dependencies": {
