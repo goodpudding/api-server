@@ -3,47 +3,72 @@
 const express = require('express');
 const router = express.Router();
 const { Cat } = require('../models/cat');
-const validator = require('../middleware/validator');
 
 
 router.get('/', readCat);
-router.post('/',validator, createCat);
+router.get('/:id', readPluralCats);
+router.post('/', createCat);
 router.put('/:id', updateCat);
 router.delete('/:id', deleteCat);
 
-const data = [{name: 'Marshellow', age: 7, sex: 'm', breed: 'Siamese'}];
 
 async function readCat(request, response, next) {
   // let {name} = request.query;
+  try {
   let data = await Cat.findAll();
   response.status(200).json(data);
+} catch (error) {
+    console.log(' readCat Error: ', error);
+  }
+}
+
+async function readPluralCats(request, response, next) {
+  console.log('Test message')
+  let id = request.params.id;
+  try {
+  let data = await Cat.findOne( {where:{id}});
+  response.status(200).json(data);
+} catch (error) {
+    console.log(' readPluralCats Error: ', error);
+  }
 }
 
 async function createCat(request, response, next) {
-  const cat = await Cat.create(request.body);
-  data.push(cat);
-  response.status(200).json(cat);
+  try {
+  const catObj = await Cat.create(request.body);
+  response.status(200).json(catObj);
+  } catch (error) {
+    console.log('createCat Error: ', error);
+  }
 }
 
-function updateCat(request, response, next) {
+async function updateCat(request, response, next) {
   let id = request.params.id;
-  const cat = {
+  try {
+  const catObj = {
     name: request.body.name,
     age: request.body.age,
     sex: request.body.sex,
     breed: request.body.breed,
-    id: id
   }
   // update the array
-  let index = id - 1;
-  data[index] = cat;
-  response.status(200).send(cat);
+ const catUpdate = await Cat.findOne({where:{id}});
+ const results = await catUpdate.update(catObj);
+  response.status(200).send(results);
+  } catch (error) {
+    console.log('updateCat Error: ', error);
+  }
 }
 
-function deleteCat(request, response, next) {
+async function deleteCat(request, response, next) {
   let id = request.params.id;
-  Cat.findByIdAndDelete(id);
-  res.status(200).send('Cat deleted');
+  try {
+    let catToDelete = await Cat.findOne({where:{id}});
+  await catToDelete.destroy();
+  response.status(200).send('Cat deleted');    
+  } catch (error) {
+    console.log('deleteCat Error: ', error);
+  }
 }
 
 module.exports = router;

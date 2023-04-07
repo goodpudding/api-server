@@ -2,11 +2,12 @@
 
 require('dotenv').config();
 const server = require('./src/server');
-const { sequelize } = require('./src/models/cat')
+const PORT = process.env.PORT;
+const { sequelize } = require('./src/models')
 
 sequelize.sync()
 .then(() => {
-  server.start(3001);
+  server.start(PORT);
 })
 .catch(err => {
   console.log('SQL CONNECTION ERROR: ', err);

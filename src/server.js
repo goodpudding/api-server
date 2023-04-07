@@ -13,7 +13,7 @@ const catTreatRoute = require('./routes/catTreatRoute');
 app.use(express.json());
 app.use(cors());
 app.use(logger);
-app.use('/cats', catRoute);
+app.use('/cat', catRoute);
 app.use('/cattreats', catTreatRoute);
 
 // app.get('/person',(request, response, next) => {

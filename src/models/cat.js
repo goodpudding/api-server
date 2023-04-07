@@ -1,9 +1,7 @@
 'use strict';
 
-require('dotenv').config();
-const { Sequelize, DataTypes } = require('sequelize');
-const SQL_URL = process.env.SQL_URL || "sqlite::memory:";
-const sequelize = new Sequelize(SQL_URL);
+const { DataTypes } = require('sequelize');
+const { sequelize } = require('./index');
 
 // defines a table
 const Cat = sequelize.define("Cat", {
@@ -26,6 +24,5 @@ const Cat = sequelize.define("Cat", {
 });
 
 module.exports = {
-  sequelize,
   Cat,
 };
