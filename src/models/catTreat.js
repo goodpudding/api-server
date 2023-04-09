@@ -18,6 +18,10 @@ const CatTreat = (sequelize) => sequelize.define("CatTreat", {
   type: {
     type: DataTypes.ENUM('dry', 'wet', 'cat nip'),
     allowNull: true
+  },
+  catId: {
+    type: DataTypes.INTEGER,
+    allowNull: false
   }
 });
 

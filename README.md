@@ -15,7 +15,11 @@ This repo is for my module 1 labs
 
 <!-- What are the steps that a user must take in order to build this app on their own machine and get it running? -->
 
-## Architecture
+## Lab-04 Feature
+
+My partner was Miranda Lu. My key takeway was that I was using incorrect syntax in spots, but for the most part we had the same thing.
+[My PR](https://github.com/mirandalu2020/api-server/pull/4)
+[Her PR](https://github.com/goodpudding/api-server/pull/2)
 
 <!-- Provide a detailed description of the application design. What technologies (languages, libraries, etc) you're using, and any other relevant design information. -->
 

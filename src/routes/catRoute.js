@@ -2,7 +2,7 @@
 
 const express = require('express');
 const router = express.Router();
-const { Cat } = require('../models/cat');
+const { Cat } = require('../models');
 
 
 router.get('/', readCat);
@@ -13,62 +13,39 @@ router.delete('/:id', deleteCat);
 
 
 async function readCat(request, response, next) {
-  // let {name} = request.query;
-  try {
-  let data = await Cat.findAll();
-  response.status(200).json(data);
-} catch (error) {
-    console.log(' readCat Error: ', error);
-  }
+ let data = await Cat.read();
+ response.json(data);
 }
 
 async function readPluralCats(request, response, next) {
-  console.log('Test message')
-  let id = request.params.id;
-  try {
-  let data = await Cat.findOne( {where:{id}});
-  response.status(200).json(data);
-} catch (error) {
-    console.log(' readPluralCats Error: ', error);
-  }
+  const catId = request.params.id;
+  let data = await Cat.read(catId);
+  response.json(data);
 }
 
 async function createCat(request, response, next) {
-  try {
-  const catObj = await Cat.create(request.body);
-  response.status(200).json(catObj);
-  } catch (error) {
-    console.log('createCat Error: ', error);
-  }
+  const createCat = await Cat.create(request.body);
+  response.json(createCat);
 }
 
 async function updateCat(request, response, next) {
-  let id = request.params.id;
-  try {
+  let catId = request.params.id;
   const catObj = {
     name: request.body.name,
     age: request.body.age,
     sex: request.body.sex,
     breed: request.body.breed,
   }
-  // update the array
- const catUpdate = await Cat.findOne({where:{id}});
- const results = await catUpdate.update(catObj);
-  response.status(200).send(results);
-  } catch (error) {
-    console.log('updateCat Error: ', error);
-  }
+  const results = Cat.update(catId, catObj);
+  response.json(results);
+
 }
 
 async function deleteCat(request, response, next) {
-  let id = request.params.id;
-  try {
-    let catToDelete = await Cat.findOne({where:{id}});
-  await catToDelete.destroy();
-  response.status(200).send('Cat deleted');    
-  } catch (error) {
-    console.log('deleteCat Error: ', error);
-  }
+  let catId = request.params.id;
+  await Cat.delete(catId);
+  const results = await Cat.read();
+  response.json(results);
 }
 
 module.exports = router;
