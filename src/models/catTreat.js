@@ -1,9 +1,8 @@
 'use strict';
 
 const { DataTypes } = require('sequelize');
-const { sequelize } = require('./index');
 
-const CatTreat = sequelize.define("CatTreat", {
+const CatTreat = (sequelize) => sequelize.define("CatTreat", {
   name: {
     type: DataTypes.STRING,
     allowNull: false
@@ -19,9 +18,11 @@ const CatTreat = sequelize.define("CatTreat", {
   type: {
     type: DataTypes.ENUM('dry', 'wet', 'cat nip'),
     allowNull: true
+  },
+  catId: {
+    type: DataTypes.INTEGER,
+    allowNull: false
   }
 });
 
-module.exports = {
-  CatTreat,
-};
+module.exports = CatTreat;

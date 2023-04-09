@@ -1,10 +1,10 @@
 'use strict';
 
 const { DataTypes } = require('sequelize');
-const { sequelize } = require('./index');
+// const { sequelize } = require('./index');
 
 // defines a table
-const Cat = sequelize.define("Cat", {
+const Cat = (sequelize) => sequelize.define("Cat", {
   name: {
     type: DataTypes.STRING,
     allowNull: false
@@ -23,6 +23,4 @@ const Cat = sequelize.define("Cat", {
   }
 });
 
-module.exports = {
-  Cat,
-};
+module.exports = Cat;
